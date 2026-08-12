@@ -1,1 +1,203 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --angular-gradient: linear-gradient(135deg, #0a0e1a 0%, #120b24 50%, #1a0618 100%);
+  --brand-gradient: linear-gradient(90deg, #ff007a 0%, #7b00ff 50%, #00f0ff 100%);
+
+  --primary: #e0317e;
+  --secondary: #8423d9;
+  --accent: #ff5e62;
+
+  --bg-primary: #030303;
+  --bg-secondary: #0a0a0c;
+  --bg-tertiary: #121214;
+
+  --surface: #16161a;
+  --border: rgba(255, 255, 255, 0.05);
+
+  --text-main: #f5f5f7;
+  --text-muted: #8e8e93;
+  --text-dark: #636366;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  --header-height: 5.5rem;
+  --container-max: 72rem;
+  --section-gap: clamp(4rem, 8vw, 7rem);
+  --header-bg: rgba(9, 9, 11, 0.72);
+  --header-border: rgba(255, 255, 255, 0.05);
+  --mobile-menu-bg: rgba(12, 12, 14, 0.96);
+  --mobile-menu-overlay: rgba(0, 0, 0, 0.55);
+  --hero-orb: var(--angular-gradient);
+  --cta-block-bg: var(--surface);
+
+  transition:
+    --bg-primary 0.4s ease,
+    --bg-secondary 0.4s ease,
+    --bg-tertiary 0.4s ease,
+    --surface 0.4s ease,
+    --border 0.4s ease,
+    --text-main 0.4s ease,
+    --text-muted 0.4s ease,
+    --text-dark 0.4s ease,
+    --header-bg 0.4s ease,
+    --header-border 0.4s ease,
+    --mobile-menu-bg 0.4s ease,
+    --mobile-menu-overlay 0.4s ease,
+    --hero-orb 0.4s ease,
+    --cta-block-bg 0.4s ease;
+}
+
+[data-theme='light'] {
+  --bg-primary: #fafafa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f4f4f5;
+  --surface: #ffffff;
+  --border: rgba(0, 0, 0, 0.08);
+  --text-main: #09090b;
+  --text-muted: #52525b;
+  --text-dark: #71717a;
+  --header-bg: rgba(255, 255, 255, 0.9);
+  --header-border: rgba(0, 0, 0, 0.08);
+  --mobile-menu-bg: rgba(255, 255, 255, 0.98);
+  --mobile-menu-overlay: rgba(0, 0, 0, 0.25);
+  --hero-orb: linear-gradient(135deg, rgba(255, 223, 255, 0.8) 0%, rgba(162, 119, 255, 0.85) 50%, rgba(218, 255, 255, 0.95) 100%);
+  --cta-block-bg: #ffffff;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+}
+
+.container {
+  width: min(100% - 2rem, var(--container-max));
+  margin-inline: auto;
+}
+
+.section {
+  padding-block: var(--section-gap);
+}
+
+.section-label {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.section-title {
+  margin-bottom: 1rem;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.section-subtitle {
+  max-width: 38rem;
+  color: var(--text-muted);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+.gradient-text {
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.page-hero {
+  padding-block: calc(var(--header-height) + 3rem) 4rem;
+}
+
+.page-hero__title {
+  margin-bottom: 1.25rem;
+  font-size: clamp(2.25rem, 6vw, 4rem);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+
+.page-hero__description {
+  max-width: 40rem;
+  color: var(--text-muted);
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+.grid-2 {
+  display: grid;
+  gap: 1.25rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.grid-3 {
+  display: grid;
+  gap: 1.25rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Theme transition animation class */
+html.theme-transition {
+  * {
+    transition:
+      background-color 0.4s ease,
+      border-color 0.4s ease,
+      box-shadow 0.4s ease !important;
+  }
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
