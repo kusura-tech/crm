@@ -1,4 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
 :root {
   --angular-gradient: linear-gradient(135deg, #0a0e1a 0%, #120b24 50%, #1a0618 100%);
   --brand-gradient: linear-gradient(90deg, #ff007a 0%, #7b00ff 50%, #00f0ff 100%);
@@ -98,85 +97,6 @@ a {
   color: inherit;
 }
 
-.container {
-  width: min(100% - 2rem, var(--container-max));
-  margin-inline: auto;
-}
-
-.section {
-  padding-block: var(--section-gap);
-}
-
-.section-label {
-  display: inline-block;
-  margin-bottom: 1rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--primary);
-}
-
-.section-title {
-  margin-bottom: 1rem;
-  font-size: clamp(1.75rem, 4vw, 2.75rem);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-}
-
-.section-subtitle {
-  max-width: 38rem;
-  color: var(--text-muted);
-  font-size: 1.0625rem;
-  line-height: 1.7;
-}
-
-.gradient-text {
-  background: var(--brand-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.page-hero {
-  padding-block: calc(var(--header-height) + 3rem) 4rem;
-}
-
-.page-hero__title {
-  margin-bottom: 1.25rem;
-  font-size: clamp(2.25rem, 6vw, 4rem);
-  font-weight: 600;
-  letter-spacing: -0.04em;
-  line-height: 1.05;
-}
-
-.page-hero__description {
-  max-width: 40rem;
-  color: var(--text-muted);
-  font-size: 1.125rem;
-  line-height: 1.75;
-}
-
-.grid-2 {
-  display: grid;
-  gap: 1.25rem;
-
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-.grid-3 {
-  display: grid;
-  gap: 1.25rem;
-
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-/* Theme transition animation class */
 html.theme-transition {
   * {
     transition:
@@ -199,8 +119,5 @@ a {
   text-decoration: none;
   color: inherit;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

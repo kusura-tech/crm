@@ -1,0 +1,26 @@
+core/
+├── guards/
+├── services/
+├── interceptors/
+└── models/
+
+shared/
+├── components/
+├── directives/
+├── pipes/
+└── ui/
+
+features/
+├── auth/
+├── dashboard/
+├── clients/
+├── projects/
+├── tasks/
+├── payments/
+├── requests/
+├── portfolio/
+└── settings/
+
+layouts/
+├── admin-layout/
+└── auth-layout/
