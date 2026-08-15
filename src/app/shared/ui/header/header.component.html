@@ -1,0 +1,71 @@
+<mat-toolbar class="header-toolbar">
+  <!-- Левая часть: кнопка меню и лого -->
+  <div class="header-left">
+    <button
+      mat-icon-button
+      (click)="onToggleSidenav()"
+      aria-label="Toggle Menu"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span class="logo-title">CRM System</span>
+  </div>
+
+  <!-- Центр: Быстрый поиск -->
+  <div class="header-search">
+    <mat-icon class="search-icon">search</mat-icon>
+    <input type="text" placeholder="Поиск клиентов, проектов..." />
+  </div>
+
+  <!-- Правая часть: Уведомления и Профиль -->
+  <div class="header-right">
+    <button mat-icon-button class="icon-btn" aria-label="Notifications">
+      <mat-icon
+        [matBadge]="unreadNotificationsCount"
+        [matBadgeHidden]="unreadNotificationsCount === 0"
+        matBadgeColor="warn"
+      >
+        notifications
+      </mat-icon>
+    </button>
+
+    <button mat-button [matMenuTriggerFor]="userMenu" class="user-menu-btn">
+      <!-- Градиентная обводка -->
+      <div class="user-avatar-container">
+        <div class="user-avatar">
+          <img
+            *ngIf="(currentUser$)?.photoURL; else defaultIcon"
+            [src]="(currentUser$)?.photoURL"
+            alt="User Avatar"
+          />
+
+          <ng-template #defaultIcon>
+            <mat-icon class="avatar-icon">person</mat-icon>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Имя и стрелка -->
+      <span class="user-name">
+        {{ (currentUser$)?.displayName || "user" }}
+      </span>
+      <mat-icon class="dropdown-arrow">arrow_drop_down</mat-icon>
+    </button>
+
+    <mat-menu #userMenu="matMenu" xPosition="before">
+      <button mat-menu-item routerLink="/profile">
+        <mat-icon>person</mat-icon>
+        <span>Профиль</span>
+      </button>
+      <button mat-menu-item routerLink="/settings">
+        <mat-icon>settings</mat-icon>
+        <span>Настройки</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon color="warn">exit_to_app</mat-icon>
+        <span>Выйти</span>
+      </button>
+    </mat-menu>
+  </div>
+</mat-toolbar>

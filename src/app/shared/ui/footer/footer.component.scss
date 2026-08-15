@@ -1,0 +1,115 @@
+:host {
+  display: block;
+  width: 100%;
+  margin-top: auto; /* Чтобы футер прижимался к низу при малом количестве контента */
+}
+
+.app-footer {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--text-muted);
+  padding: 1rem 1.5rem;
+  font-size: 0.85rem;
+  transition: background 0.4s ease, border-color 0.4s ease;
+
+  .footer-container {
+    max-width: var(--container-max, 72rem);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  /* Левая часть */
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+
+    .copyright {
+      color: var(--text-muted);
+
+      .brand-text {
+        font-weight: 600;
+        background: var(--brand-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    }
+
+    /* Индикатор статуса работы */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--text-main);
+
+      .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: #10b981; /* Зеленый огонек */
+        box-shadow: 0 0 8px #10b981;
+      }
+    }
+  }
+
+  /* Правая часть */
+  .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    .footer-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: var(--text-main);
+      }
+    }
+
+    .divider {
+      color: var(--text-dark);
+      font-size: 0.65rem;
+    }
+
+    .version-tag {
+      padding: 0.15rem 0.5rem;
+      border-radius: var(--radius-sm);
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      color: var(--text-dark);
+      font-size: 0.75rem;
+      font-family: monospace;
+    }
+  }
+}
+
+/* Мобильная адаптивность */
+@media (max-width: 640px) {
+  .app-footer {
+    padding: 1rem;
+
+    .footer-container {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.75rem;
+    }
+
+    .footer-left {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+}
