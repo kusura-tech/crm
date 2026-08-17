@@ -11,10 +11,10 @@ import { Lead } from '../../core/models/lead.interface';
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, MatIconModule, MatButtonModule, MatProgressBarModule],
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss']
 })
-export class HomeComponent {
+export class DashboardComponent {
   // Статистика (KPI)
   stats: StatCard[] = [
     { title: 'Активные проекты', value: 5, change: '+2 за месяц', icon: 'business_center', colorClass: 'primary' },
