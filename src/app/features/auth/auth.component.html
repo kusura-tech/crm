@@ -1,1 +1,64 @@
-<p>auth works!</p>
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h1 class="logo-title">CRM System</h1>
+      <p class="subtitle">{{ isRegisterMode ? 'Создание нового аккаунта' : 'Вход в панель управления' }}</p>
+    </div>
+
+    <form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="auth-form">
+      <div *ngIf="errorMessage" class="error-banner">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <!-- Поле Имени (только для регистрации) -->
+      <div *ngIf="isRegisterMode" class="field-group">
+        <label>Имя и Фамилия</label>
+        <div class="input-wrapper">
+          <mat-icon class="field-icon">person_outline</mat-icon>
+          <input type="text" formControlName="displayName" placeholder="Иван Иванов" />
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Email</label>
+        <div class="input-wrapper">
+          <mat-icon class="field-icon">mail_outline</mat-icon>
+          <input type="email" formControlName="email" placeholder="admin@crm.com" />
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Пароль</label>
+        <div class="input-wrapper password-wrapper">
+          <mat-icon class="field-icon">lock_outline</mat-icon>
+          <input
+            [type]="passwordInputType"
+            formControlName="password"
+            placeholder="••••••••"
+            [attr.autocomplete]="isRegisterMode ? 'new-password' : 'current-password'"
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="showPassword ? 'Скрыть пароль' : 'Показать пароль'"
+          >
+            <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="authForm.invalid || isLoading" class="btn-submit">
+        <span>{{ isRegisterMode ? 'Зарегистрироваться' : 'Войти в систему' }}</span>
+      </button>
+
+      <div class="auth-footer">
+        <span class="footer-text">{{ isRegisterMode ? 'Уже есть аккаунт?' : 'Нет аккаунта?' }}</span>
+        <button type="button" (click)="toggleMode()" class="btn-link">
+          {{ isRegisterMode ? 'Войти' : 'Зарегистрироваться' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
