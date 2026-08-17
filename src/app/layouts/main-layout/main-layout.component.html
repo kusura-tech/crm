@@ -1,7 +1,11 @@
-<app-header></app-header>
+<app-header (toggleSidenav)="toggleSidebar()"></app-header>
 
-<main class="content">
+<div class="layout-body">
+  <app-sidebar [class.collapsed]="!isSidebarOpen()"></app-sidebar>
+
+  <main class="content">
     <router-outlet></router-outlet>
-</main>
+  </main>
+</div>
 
 <app-footer></app-footer>

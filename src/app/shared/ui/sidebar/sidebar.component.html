@@ -1,0 +1,16 @@
+<aside class="app-sidebar">
+  <div class="sidebar-nav">
+    <nav class="nav-list">
+      <a 
+        *ngFor="let item of navItems" 
+        [routerLink]="item.link" 
+        routerLinkActive="active" 
+        class="nav-item"
+      >
+        <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+        <span class="nav-label">{{ item.label }}</span>
+        <span *ngIf="item.badge" class="nav-badge">{{ item.badge }}</span>
+      </a>
+    </nav>
+  </div>
+</aside>

@@ -2,13 +2,32 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: var(--bg-primary);
+}
+
+.layout-body {
+  display: flex;
+  flex: 1;
+  position: relative;
+  overflow-x: hidden;
+}
+
+app-sidebar {
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+  will-change: margin-left;
+
+  &.collapsed {
+    margin-left: -250px;
+    opacity: 0;
+    pointer-events: none;
+  }
 }
 
 .content {
   flex: 1;
-  padding: 1.5rem;
-  max-width: var(--container-max, 72rem);
+  padding: 1.5rem 2rem;
   width: 100%;
-  margin: 0 auto;
+  max-width: 100%; /* Занимает всё свободное место справа от сайдбара */
   box-sizing: border-box;
+  transition: all 0.3s ease;
 }
