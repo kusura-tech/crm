@@ -1,1 +1,110 @@
-<p>home works!</p>
+<div class="dashboard-page">
+  <!-- Заголовок и быстрые действия -->
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">Панель управления</h1>
+      <p class="page-subtitle">Обзор проектов, новых заявок и текущих задач</p>
+    </div>
+    <div class="action-buttons">
+      <button mat-flat-button class="btn-primary">
+        <mat-icon>add</mat-icon> Новый проект
+      </button>
+      <button mat-stroked-button class="btn-secondary">
+        <mat-icon>person_add</mat-icon> Клиент
+      </button>
+    </div>
+  </header>
+
+  <!-- KPI карточки -->
+  <section class="stats-grid">
+    <div class="stat-card" *ngFor="let stat of stats">
+      <div class="stat-header">
+        <span class="stat-title">{{ stat.title }}</span>
+        <div class="stat-icon" [ngClass]="stat.colorClass">
+          <mat-icon>{{ stat.icon }}</mat-icon>
+        </div>
+      </div>
+      <div class="stat-value">{{ stat.value }}</div>
+      <div class="stat-change">{{ stat.change }}</div>
+    </div>
+  </section>
+
+  <!-- Основная двухколоночная сетка -->
+  <div class="dashboard-grid">
+    
+    <!-- Левая колонка -->
+    <div class="main-column">
+      
+      <!-- Карточка: Заявки с сайта -->
+      <div class="content-card">
+        <div class="card-header">
+          <h2><mat-icon class="icon-gradient">inbox</mat-icon> Новые заявки с сайта</h2>
+          <span class="badge">{{ recentLeads.length }}</span>
+        </div>
+        <div class="leads-list">
+          <div class="lead-item" *ngFor="let lead of recentLeads">
+            <div class="lead-info">
+              <span class="lead-name">{{ lead.name }}</span>
+              <span class="lead-service">{{ lead.service }}</span>
+            </div>
+            <div class="lead-meta">
+              <span class="lead-date">{{ lead.date }}</span>
+              <button mat-stroked-button class="btn-sm">В клиента</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Карточка: Проекты в работе -->
+      <div class="content-card">
+        <div class="card-header">
+          <h2><mat-icon class="icon-gradient">work</mat-icon> Проекты в работе</h2>
+        </div>
+        <div class="projects-list">
+          <div class="project-item" *ngFor="let project of activeProjects">
+            <div class="project-info">
+              <span class="project-title">{{ project.title }}</span>
+              <span class="project-client">{{ project.client }}</span>
+            </div>
+            <div class="project-progress">
+              <mat-progress-bar mode="determinate" [value]="project.progress"></mat-progress-bar>
+              <span class="progress-text">{{ project.progress }}%</span>
+            </div>
+            <div class="project-deadline">
+              <mat-icon>event</mat-icon>
+              {{ project.deadline }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Правая колонка -->
+    <div class="side-column">
+      
+      <!-- Карточка: Ближайшие задачи -->
+      <div class="content-card">
+        <div class="card-header">
+          <h2><mat-icon class="icon-gradient">check_circle</mat-icon> Ближайшие задачи</h2>
+        </div>
+        <div class="tasks-mini-list">
+          <div class="task-mini-item">
+            <input type="checkbox" id="t1" />
+            <label for="t1">Согласовать ТЗ с клиентом</label>
+          </div>
+          <div class="task-mini-item">
+            <input type="checkbox" id="t2" />
+            <label for="t2">Подключить Firebase Auth</label>
+          </div>
+          <div class="task-mini-item">
+            <input type="checkbox" id="t3" />
+            <label for="t3">Выставить счет по проекту CRM</label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
