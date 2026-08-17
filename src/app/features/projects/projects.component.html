@@ -1,1 +1,151 @@
-<p>projects works!</p>
+<div class="projects-page">
+  <!-- Шапка страницы -->
+  <header class="page-header">
+    <div>
+      <h1 class="page-title">Проекты</h1>
+      <p class="page-subtitle">Отслеживание этапов разработки и бюджетов</p>
+    </div>
+    <button class="btn-primary" (click)="openModal()">
+      <mat-icon>add</mat-icon>
+      <span>Новый проект</span>
+    </button>
+  </header>
+
+  <!-- Фильтры и поиск -->
+  <div class="toolbar">
+    <div class="search-box">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input type="text" [formControl]="searchControl" placeholder="Поиск проекта или клиента..." />
+    </div>
+
+    <div class="filter-group">
+      <select [formControl]="statusFilterControl" class="select-input">
+        <option value="all">Все статусы</option>
+        <option value="new">Новые</option>
+        <option value="in_progress">В работе</option>
+        <option value="on_hold">На паузе</option>
+        <option value="completed">Завершённые</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Сетка карточек проектов -->
+  <div class="projects-grid">
+    <div class="project-card" *ngFor="let project of filteredProjects$ | async">
+      <div class="card-header">
+        <span class="status-badge" [attr.data-status]="project.status">
+          {{ statusLabels[project.status] }}
+        </span>
+        <div class="card-actions">
+          <button class="icon-btn" (click)="openModal(project)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button class="icon-btn delete" (click)="deleteProject(project.id!)">
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <h3 class="project-title">{{ project.title }}</h3>
+      <p class="client-name" *ngIf="project.clientName">
+        <mat-icon>person_outline</mat-icon>
+        <span>{{ project.clientName }}</span>
+      </p>
+
+      <p class="project-desc" *ngIf="project.description">{{ project.description }}</p>
+
+      <!-- Прогресс -->
+      <div class="progress-section">
+        <div class="progress-label">
+          <span>Прогресс</span>
+          <span class="progress-val">{{ project.progress || 0 }}%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="project.progress || 0"></div>
+        </div>
+      </div>
+
+      <!-- Футер карточки -->
+      <div class="card-footer">
+        <div class="meta-item">
+          <span class="label">Бюджет</span>
+          <span class="val budget">{{ project.budget | number:'1.0-0' }} ₽</span>
+        </div>
+        <div class="meta-item" *ngIf="project.deadline">
+          <span class="label">Дедлайн</span>
+          <span class="val">{{ project.deadline }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно -->
+  <div class="modal-overlay" *ngIf="isModalOpen" (click)="closeModal()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>{{ editingProjectId ? 'Редактировать проект' : 'Создать проект' }}</h2>
+        <button class="close-btn" (click)="closeModal()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <form [formGroup]="projectForm" (ngSubmit)="saveProject()" class="modal-body">
+        <div class="form-group">
+          <label>Название проекта *</label>
+          <input type="text" formControlName="title" placeholder="Разработка CRM системы" />
+        </div>
+
+        <div class="form-group">
+          <label>Клиент *</label>
+          <select formControlName="clientId" (change)="onClientSelect($event)" class="select-input">
+            <option value="" disabled>Выберите клиента</option>
+            <option *ngFor="let client of clients$ | async" [value]="client.id">
+              {{ client.name }} {{ client.company ? '(' + client.company + ')' : '' }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Статус</label>
+            <select formControlName="status" class="select-input">
+              <option value="new">Новый</option>
+              <option value="in_progress">В работе</option>
+              <option value="on_hold">На паузе</option>
+              <option value="completed">Завершён</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Прогресс (%)</label>
+            <input type="number" formControlName="progress" min="0" max="100" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Бюджет (₽) *</label>
+            <input type="number" formControlName="budget" placeholder="150000" />
+          </div>
+
+          <div class="form-group">
+            <label>Дедлайн</label>
+            <input type="date" formControlName="deadline" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Описание</label>
+          <textarea formControlName="description" rows="3" placeholder="Краткое ТЗ или задачи..."></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" (click)="closeModal()">Отмена</button>
+          <button type="submit" [disabled]="projectForm.invalid" class="btn-primary">
+            {{ editingProjectId ? 'Сохранить' : 'Создать' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

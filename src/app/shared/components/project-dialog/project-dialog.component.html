@@ -1,0 +1,68 @@
+<div class="dialog-header">
+  <div>
+    <p class="dialog-kicker">{{ data?.project ? 'Проект' : 'Новый проект' }}</p>
+    <h2>{{ data?.project ? 'Редактировать проект' : 'Создать проект' }}</h2>
+  </div>
+
+  <button type="button" class="close-btn" (click)="close()" aria-label="Закрыть">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<form [formGroup]="projectForm" (ngSubmit)="save()" class="dialog-body">
+  <div class="form-group">
+    <label>Название проекта *</label>
+    <input type="text" formControlName="title" placeholder="Разработка CRM-системы" />
+  </div>
+
+  <div class="form-group">
+    <label>Клиент *</label>
+    <select formControlName="clientId" (change)="onClientSelect($event)" class="select-input">
+      <option value="" disabled>Выберите клиента</option>
+      <option *ngFor="let client of clients$ | async" [value]="client.id">
+        {{ client.name }}{{ client.company ? ' (' + client.company + ')' : '' }}
+      </option>
+    </select>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label>Статус</label>
+      <select formControlName="status" class="select-input">
+        <option value="new">Новый</option>
+        <option value="in_progress">В работе</option>
+        <option value="on_hold">На паузе</option>
+        <option value="completed">Завершён</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Прогресс (%)</label>
+      <input type="number" formControlName="progress" min="0" max="100" placeholder="0" />
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label>Бюджет (₽) *</label>
+      <input type="number" formControlName="budget" min="0" placeholder="150000" />
+    </div>
+
+    <div class="form-group">
+      <label>Дедлайн</label>
+      <input type="date" formControlName="deadline" />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Описание</label>
+    <textarea formControlName="description" rows="4" placeholder="Краткое ТЗ, сроки и ожидаемые результаты..."></textarea>
+  </div>
+
+  <div class="dialog-footer">
+    <button type="button" class="btn-secondary" (click)="close()">Отмена</button>
+    <button type="submit" [disabled]="projectForm.invalid" class="btn-primary">
+      {{ data?.project ? 'Сохранить' : 'Создать' }}
+    </button>
+  </div>
+</form>

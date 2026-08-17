@@ -6,18 +6,18 @@
       <p class="page-subtitle">Обзор проектов, новых заявок и текущих задач</p>
     </div>
     <div class="action-buttons">
-      <button mat-flat-button class="btn-primary">
-        <mat-icon>add</mat-icon> Новый проект
-      </button>
-      <button mat-stroked-button class="btn-secondary">
-        <mat-icon>person_add</mat-icon> Клиент
-      </button>
-    </div>
+  <button mat-flat-button class="btn-primary" (click)="openCreateProjectDialog()">
+    <mat-icon>add</mat-icon> Новый проект
+  </button>
+  <button mat-stroked-button class="btn-secondary" (click)="openCreateClientDialog()">
+    <mat-icon>person_add</mat-icon> Клиент
+  </button>
+</div>
   </header>
 
   <!-- KPI карточки -->
   <section class="stats-grid">
-    <div class="stat-card" *ngFor="let stat of stats">
+    <div class="stat-card" *ngFor="let stat of stats$ | async">
       <div class="stat-header">
         <span class="stat-title">{{ stat.title }}</span>
         <div class="stat-icon" [ngClass]="stat.colorClass">
@@ -61,7 +61,7 @@
           <h2><mat-icon class="icon-gradient">work</mat-icon> Проекты в работе</h2>
         </div>
         <div class="projects-list">
-          <div class="project-item" *ngFor="let project of activeProjects">
+          <div class="project-item" *ngFor="let project of activeProjects$ | async">
             <div class="project-info">
               <span class="project-title">{{ project.title }}</span>
               <span class="project-client">{{ project.client }}</span>

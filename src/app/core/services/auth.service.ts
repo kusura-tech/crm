@@ -8,7 +8,7 @@ import { UserProfile } from '../models/user.interface';
   providedIn: 'root'
 })
 export class AuthService {
-  private auth: Auth = inject(Auth);
+  readonly auth: Auth = inject(Auth);
   private firestore: Firestore = inject(Firestore);
   
   readonly currentUser$: Observable<User | null> = user(this.auth);
