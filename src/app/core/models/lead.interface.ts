@@ -1,7 +1,14 @@
-export interface Lead {
+export type MessageStatus = 'new' | 'read' | 'replied' | 'archived' | 'converted';
+
+export interface ContactMessage {
   id: string;
   name: string;
-  service: string;
-  date: string;
-  status: 'new' | 'in_review';
+  email: string;
+  phone : string
+  company: string;
+  subject: string;
+  body: string;
+  status: MessageStatus;
+  createdAt: Date;
+  serviceType: string
 }

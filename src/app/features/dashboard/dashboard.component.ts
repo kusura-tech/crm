@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { DashboardService } from '../../core/services/dashboard.service';
 import { StatCard } from '../../core/models/stat.interface';
 import { ActiveProject } from '../../core/models/project.interface';
-import { Lead } from '../../core/models/lead.interface';
+import { ContactMessage } from '../../core/models/lead.interface';
 
 // Импортируем вынесенные диалоги
 import { ClientDialogComponent } from '../../shared/components/client-dialog/client-dialog.component';
@@ -35,9 +35,9 @@ export class DashboardComponent implements OnInit {
   stats$!: Observable<StatCard[]>;
   activeProjects$!: Observable<ActiveProject[]>;
 
-  recentLeads: Lead[] = [
-    { id: '1', name: 'Алексей Смирнов', service: 'Разработка лендинга', date: 'Сегодня, 11:30', status: 'new' },
-    { id: '2', name: 'ООО "Вектор"', service: 'CRM система под ключ', date: 'Вчера, 18:20', status: 'new' }
+  recentLeads: ContactMessage[] = [
+    { id: '1', name: 'Алексей Смирнов', serviceType: 'Разработка лендинга', createdAt: new Date(), status: 'new', email: 'example@gmai.ru', phone: '89898988989', body: 'bgdfbnnygemnhnngfns',  company: 'aaa', subject: 'adda',},
+    { id: '2', name: 'ООО "Вектор"', serviceType: 'CRM система под ключ', createdAt: new Date(), status: 'new', email: 'example@gmai.ru', phone: '89898988989', body: 'bgdfbnnygemnhnngfns',  company: 'aaa', subject: 'adda',}
   ];
 
   ngOnInit(): void {

@@ -30,30 +30,23 @@
     </button>
 
     <button mat-button [matMenuTriggerFor]="userMenu" class="user-menu-btn">
-      <!-- Градиентная обводка -->
-      <div class="user-avatar-container">
-        <div class="user-avatar">
-          <img
-            *ngIf="(currentUser$)?.photoURL; else defaultIcon"
-            [src]="(currentUser$)?.photoURL"
-            alt="User Avatar"
-          />
-
-          <ng-template #defaultIcon>
-            <mat-icon class="avatar-icon">person</mat-icon>
-          </ng-template>
+      @if (currentUser$ | async; as user) {
+        <div class="user-avatar-container">
+          <div class="user-avatar">
+            @if (user.photoURL) {
+              <img [src]="user.photoURL" [alt]="user.displayName || 'Пользователь'" />
+            } @else {
+              <mat-icon class="avatar-icon">person</mat-icon>
+            }
+          </div>
         </div>
-      </div>
-
-      <!-- Имя и стрелка -->
-      <span class="user-name">
-        {{ (currentUser$)?.displayName || "user" }}
-      </span>
-      <mat-icon class="dropdown-arrow">arrow_drop_down</mat-icon>
+        <span class="user-name">{{ user.displayName || user.email || 'Пользователь' }}</span>
+        <span class="dropdown-arrow"><mat-icon>arrow_drop_down</mat-icon></span>
+      }
     </button>
 
     <mat-menu #userMenu="matMenu" xPosition="before">
-      <button mat-menu-item routerLink="/profile">
+      <button mat-menu-item routerLink="/settings">
         <mat-icon>person</mat-icon>
         <span>Профиль</span>
       </button>

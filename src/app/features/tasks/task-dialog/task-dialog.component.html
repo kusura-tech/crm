@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Новая задача</h2>
+    <mat-dialog-content class="dialog-content">
+      <mat-form-field appearance="outline">
+        <mat-label>Название</mat-label>
+        <input matInput [(ngModel)]="task.title" placeholder="Введите название" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Описание</mat-label>
+        <textarea matInput [(ngModel)]="task.description" rows="3"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Приоритет</mat-label>
+        <mat-select [(ngModel)]="task.priority">
+          <mat-option value="low">Низкий</mat-option>
+          <mat-option value="medium">Средний</mat-option>
+          <mat-option value="high">Высокий</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Отмена</button>
+      <button mat-raised-button color="primary" [disabled]="!task.title" (click)="save()">Создать</button>
+    </mat-dialog-actions>

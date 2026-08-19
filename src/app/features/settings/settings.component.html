@@ -1,0 +1,49 @@
+<div class="settings-container">
+  <mat-tab-group>
+    <mat-tab label="Профиль">
+      <form class="settings-form">
+        <div class="profile-photo-row">
+          <div class="profile-photo">
+            @if (userProfile.photoURL) {
+              <img [src]="userProfile.photoURL" alt="Фото профиля" />
+            } @else {
+              <mat-icon>person</mat-icon>
+            }
+          </div>
+          <label class="photo-btn">
+            <mat-icon>photo_camera</mat-icon>
+            {{ isUploading ? 'Загрузка...' : 'Загрузить фото' }}
+            <input type="file" accept="image/*" (change)="onPhotoSelected($event)" [disabled]="isUploading" />
+          </label>
+        </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Имя пользователя</mat-label>
+          <input matInput [(ngModel)]="userProfile.displayName" name="displayName" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput [(ngModel)]="userProfile.email" name="email" disabled />
+        </mat-form-field>
+        <button mat-raised-button color="primary" class="save-btn" type="button" [disabled]="isSaving" (click)="saveProfile()">
+          {{ isSaving ? 'Сохранение...' : 'Сохранить' }}
+        </button>
+      </form>
+    </mat-tab>
+    <mat-tab label="Внешний вид">
+      <div class="theme-row">
+        <div>
+          <strong>Светлая тема</strong>
+          <p>Выберите удобное оформление интерфейса</p>
+        </div>
+        <mat-slide-toggle [checked]="isLightTheme" (change)="toggleTheme()"></mat-slide-toggle>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Интеграция Firebase">
+      <div class="integration-info">
+        <p>Статус подключения: <strong>Активно</strong></p>
+        <button mat-stroked-button>Проверить соединение</button>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

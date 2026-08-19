@@ -1,1 +1,46 @@
-<p>tasks works!</p>
+<div class="board-actions" style="padding: 1rem 1.5rem 0;">
+  <button mat-raised-button color="primary" class="add-btn" (click)="openAddTaskDialog()">
+    + Добавить задачу
+  </button>
+</div>
+
+<div class="kanban-board">
+  @if (projectIdFilter) {
+    <div class="kanban-filter-banner">
+      <mat-icon>filter_alt</mat-icon>
+      <span>Фильтр по проекту: {{ projectIdFilter }}</span>
+    </div>
+  }
+
+  @for (col of columns; track col.status; let i = $index) {
+    <div class="kanban-column">
+      <h3>
+        {{ col.title }}
+        <span class="task-count">{{ col.tasks.length }}</span>
+      </h3>
+      <div
+        cdkDropList
+        [id]="'list-' + i"
+        [cdkDropListData]="col.tasks"
+        [cdkDropListConnectedTo]="connectedDropLists"
+        class="task-list"
+        (cdkDropListDropped)="drop($event, col.status)">
+        @for (task of col.tasks; track task.id) {
+          <mat-card cdkDrag class="task-card">
+            <mat-card-header>
+              <mat-card-title>{{ task.title }}</mat-card-title>
+              <span class="priority-badge" [ngClass]="getPriorityClass(task.priority)">
+                {{ getPriorityLabel(task.priority) }}
+              </span>
+            </mat-card-header>
+            @if (task.description) {
+              <mat-card-content>
+                <p>{{ task.description }}</p>
+              </mat-card-content>
+            }
+          </mat-card>
+        }
+      </div>
+    </div>
+  }
+</div>

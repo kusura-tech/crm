@@ -45,10 +45,10 @@
           <div class="lead-item" *ngFor="let lead of recentLeads">
             <div class="lead-info">
               <span class="lead-name">{{ lead.name }}</span>
-              <span class="lead-service">{{ lead.service }}</span>
+              <span class="lead-service">{{ lead.serviceType }}</span>
             </div>
             <div class="lead-meta">
-              <span class="lead-date">{{ lead.date }}</span>
+              <span class="lead-date">{{ lead.createdAt }}</span>
               <button mat-stroked-button class="btn-sm">В клиента</button>
             </div>
           </div>

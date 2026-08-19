@@ -17,6 +17,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'leads',
+        loadComponent: () =>
+          import('./features/leads/leads-list/leads-list.component').then(
+            (m) => m.LeadsListComponent,
+          ),
+      },
+      {
         path: 'clients',
         loadComponent: () =>
           import('./features/clients/clients.component').then(
@@ -42,6 +49,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/payments/payments.component').then(
             (m) => m.PaymentsComponent,
+          ),
+      },
+      {
+        path: 'settings',
+        loadComponent: () =>
+          import('./features/settings/settings.component').then(
+            (m) => m.SettingsComponent,
           ),
       },
     ],

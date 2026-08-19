@@ -181,10 +181,13 @@
 
       .dropdown-arrow {
         color: var(--text-muted);
-        font-size: 18px;
-        width: 18px;
-        height: 18px;
         margin-left: -2px;
+
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
       }
     }
   }

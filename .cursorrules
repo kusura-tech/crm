@@ -1,0 +1,164 @@
+Ты — senior full-stack разработчик, дорабатывающий CRM-систему на **Angular 17+ (Standalone Components)** и **Firebase (Firestore, Auth, Storage)**.
+Проект использует дизайн-систему с поддержкой CSS-переменных (`--primary`, `--surface`, `--border`, `--brand-gradient`, `--bg-tertiary`), стеклянные эффекты (glassmorphism) и Angular Material.
+
+---
+
+## 🎯 Главная цель
+Довести проект CRM до идеального состояния, завершив все оставшиеся модули, связав их с Firestore, обеспечив отказоустойчивость, безопасность (Security Rules) и готовность к продакшену.
+
+---
+
+## 🏗️ Архитектурные правила и соглашения
+
+### 1. Angular & TypeScript
+- **Standalone Components:** Все компоненты ДОЛЖНЫ быть `standalone: true`. Не используй `NgModule`, кроме случаев подключения внешних библиотек.
+- **Dependency Injection:** Используй только современный синтаксис `inject(...)` вместо конструкторов:
+  ```typescript
+  // 🟢 ПРАВИЛЬНО:
+  private firestore = inject(Firestore);
+  private authService = inject(AuthService);
+
+  // 🔴 НЕПРАВИЛЬНО:
+  constructor(private firestore: Firestore) {}
+
+    Реактивность (RxJS & Signals):
+
+        Поддерживай подписки через async пайп в HTML-шаблонах или используй onSnapshot / collectionData с обязательной отпиской/закрытием потоков.
+
+        Избегай утечек памяти (memory leaks).
+
+2. SCSS и Стилизация
+
+    Никаких хардкод-цветов! Используй только переменные темы:
+
+        var(--surface) — фон карточек/модалок
+
+        var(--border) — границы элементов
+
+        var(--text-main) / var(--text-muted) — цвета текста
+
+        var(--brand-gradient) — акцентные кнопки и прогресс-бары
+
+        var(--bg-tertiary) — инпуты и второстепенные фоны
+
+    Глубокая стилизация Material: Для кастомизации элементов Angular Material используй ::ng-deep только внутри изолированных компонентов.
+
+3. Firebase & Data Layer
+
+    Каждый CRUD-сервис должен явно привязывать сущности к userId текущего авторизованного пользователя для разделения прав доступа.
+
+    Все операции записи/обновления/удаления должны возвращать Promise и обрабатывать возможные ошибки через try/catch или .catch().
+
+📋 Пошаговый чек-лист выполнения (Roadmap для Cursor)
+
+Выполняй задачи пошагово. Не переходи к следующей задаче, пока не проверишь предыдущую.
+Step 1: Проверка и доработка Core-слоя
+
+    [ ] Проверь наличие моделей в src/app/core/models/:
+
+        client.interface.ts
+
+        project.interface.ts
+
+        task.model.ts
+
+        lead.model.ts
+
+        payment.model.ts
+
+    [ ] Убедись, что все интерфейсы содержат поля id?: string, userId?: string и createdAt?: Date | any.
+
+Step 2: Связка модулей «Заявки» и «Клиенты»
+
+    [ ] Открой leads.service.ts и leads-list.component.ts.
+
+    [ ] Реализуй метод convertToClient(lead: Lead):
+
+        Создать новую запись в коллекции clients со всеми контактами из заявки.
+
+        Обновить статус заявки в коллекции leads на 'converted'.
+
+        Вывести уведомление об успешном конвертировании.
+
+Step 3: Модуль «Задачи» (Kanban Board c CDK Drag & Drop)
+
+    [ ] Проверь подключение @angular/cdk/drag-drop в task-board.component.ts.
+
+    [ ] Убедись, что метод drop(event) синхронизирует изменения статуса задачи с Firestore:
+    TypeScript
+
+    updateTaskStatus(taskId: string, status: Task['status'])
+
+    [ ] Добавь фильтрацию задач по текущему проекту (projectId), если откроется страница конкретного проекта.
+
+Step 4: Модуль «Финансы» (Payments)
+
+    [ ] Убедись, что FinanceService корректно считает суммарные показатели: totalIncome, totalExpenses и netProfit.
+
+    [ ] Добавь возможность фильтрации транзакций по датам и типам (income / expense).
+
+    [ ] Добавь диалоговое окно / модалку для создания новой транзакции.
+
+Step 5: Безопасность и Валидация (Firestore Security Rules)
+
+Создай файл firestore.rules в корне проекта со следующим содержимым:
+Фрагмент кода
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Вспомогательная функция проверки авторизации
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    match /clients/{clientId} {
+      allow read, write: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+    }
+
+    match /projects/{projectId} {
+      allow read, write: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+    }
+
+    match /tasks/{taskId} {
+      allow read, write: if isAuthenticated();
+      allow create: if isAuthenticated();
+    }
+
+    match /leads/{leadId} {
+      allow create: if true; // Публичное создание заявок с сайта
+      allow read, update, delete: if isAuthenticated();
+    }
+
+    match /payments/{paymentId} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}
+
+Step 6: Полировка UI/UX и адаптивность
+
+    [ ] Проверь отображение на мобильных устройствах (@media (max-width: 768px)):
+
+        Таблицы должны переходить в горизонтальный скролл или карточный вид.
+
+        Sidebar layout должен сворачиваться в бургер-меню.
+
+    [ ] Проверь состояния загрузки (Skeleton loaders или mat-spinner) во время ожидания ответов Firestore.
+
+    [ ] Добавь обработку пустых состояний (Empty States) с иконками и текстом, например: "Заявки пока отсутствуют".
+
+🧪 Финальная проверка (Definition of Done)
+
+    Проект собирается командой ng build --configuration=production без ошибок TypeScript.
+
+    Отсутствуют консольные ошибки FirebaseError: Missing or insufficient permissions.
+
+    Пользователь может пройти путь: Авторизация ➔ Создание клиента ➔ Создание проекта ➔ Перемещение задач на Kanban ➔ Фиксация оплаты ➔ Анализ баланса в Финансах.

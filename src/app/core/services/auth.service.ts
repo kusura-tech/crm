@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Auth, user, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, User } from '@angular/fire/auth';
 import { Firestore, doc, setDoc, docData } from '@angular/fire/firestore';
+import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { Observable, from, switchMap, of } from 'rxjs';
 import { UserProfile } from '../models/user.interface';
 
@@ -10,6 +11,7 @@ import { UserProfile } from '../models/user.interface';
 export class AuthService {
   readonly auth: Auth = inject(Auth);
   private firestore: Firestore = inject(Firestore);
+  private storage = inject(Storage);
   
   readonly currentUser$: Observable<User | null> = user(this.auth);
 
@@ -43,6 +45,33 @@ export class AuthService {
         await setDoc(userDocRef, newProfile);
       })
     );
+  }
+
+  async updateUserProfile(displayName: string, photoURL?: string): Promise<void> {
+    const currentUser = this.auth.currentUser;
+    if (!currentUser) throw new Error('Пользователь не авторизован');
+
+    await updateProfile(currentUser, {
+      displayName: displayName.trim(),
+      ...(photoURL ? { photoURL } : {})
+    });
+    await setDoc(doc(this.firestore, `users/${currentUser.uid}`), {
+      uid: currentUser.uid,
+      email: currentUser.email || '',
+      displayName: displayName.trim(),
+      ...(photoURL ? { photoURL } : {})
+    }, { merge: true });
+  }
+
+  async uploadProfilePhoto(file: File): Promise<string> {
+    const currentUser = this.auth.currentUser;
+    if (!currentUser) throw new Error('Пользователь не авторизован');
+
+    const photoRef = ref(this.storage, `users/${currentUser.uid}/profile-photo`);
+    await uploadBytes(photoRef, file, { contentType: file.type });
+    const photoURL = await getDownloadURL(photoRef);
+    await this.updateUserProfile(currentUser.displayName || '', photoURL);
+    return photoURL;
   }
 
   logout(): Observable<void> {

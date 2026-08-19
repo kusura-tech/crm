@@ -1,1 +1,78 @@
-<p>payments works!</p>
+<div class="finance-container">
+  <div class="finance-toolbar">
+    <div class="toolbar-left">
+      <h2>Финансы</h2>
+      <mat-button-toggle-group
+        [value]="typeFilter"
+        (change)="onTypeFilterChange($event.value)"
+        class="type-filter">
+        <mat-button-toggle value="all">Все</mat-button-toggle>
+        <mat-button-toggle value="income">Доходы</mat-button-toggle>
+        <mat-button-toggle value="expense">Расходы</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <button mat-raised-button color="primary" class="add-btn" (click)="openAddPaymentDialog()">
+      <mat-icon>add</mat-icon>
+      Добавить платёж
+    </button>
+  </div>
+
+  <div class="stats-grid">
+    <mat-card class="stat-card">
+      <div class="title">Общий доход</div>
+      <div class="amount income">+{{ totalIncome | currency:'RUB':'symbol':'1.0-0' }}</div>
+    </mat-card>
+    <mat-card class="stat-card">
+      <div class="title">Общий расход</div>
+      <div class="amount expense">-{{ totalExpenses | currency:'RUB':'symbol':'1.0-0' }}</div>
+    </mat-card>
+    <mat-card class="stat-card">
+      <div class="title">Чистая прибыль</div>
+      <div class="amount" [class.positive]="netProfit >= 0" [class.negative]="netProfit < 0">
+        {{ netProfit | currency:'RUB':'symbol':'1.0-0' }}
+      </div>
+    </mat-card>
+  </div>
+
+  @if (filteredPayments.length) {
+    <table mat-table [dataSource]="filteredPayments" class="finance-table mat-elevation-z8">
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Дата</th>
+        <td mat-cell *matCellDef="let payment">{{ payment.date | date:'dd.MM.yyyy' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Тип</th>
+        <td mat-cell *matCellDef="let payment">
+          {{ payment.type === 'income' ? 'Доход' : 'Расход' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef>Сумма</th>
+        <td mat-cell *matCellDef="let payment" [ngClass]="'amount-cell ' + payment.type">
+          {{ payment.type === 'income' ? '+' : '-' }}{{ payment.amount | currency:'RUB':'symbol':'1.0-0' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Статус</th>
+        <td mat-cell *matCellDef="let payment">{{ payment.status }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Описание</th>
+        <td mat-cell *matCellDef="let payment">{{ payment.description || '—' }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  } @else {
+    <div class="empty-state">
+      <mat-icon>account_balance_wallet</mat-icon>
+      <p>Платежи не найдены</p>
+      <span>Добавьте первый доход или расход, чтобы начать учёт</span>
+    </div>
+  }
+</div>
